@@ -31,7 +31,7 @@ type Section = "dashboard" | "hero" | "about" | "education" | "techstack" | "cer
 
 const navItems: { label: string; value: Section; icon: any }[] = [
   { label: "Dashboard", value: "dashboard", icon: LayoutDashboard },
-  { label: "Hero Section", value: "hero", icon: Sparkles },
+  { label: "Hero", value: "hero", icon: Sparkles },
   { label: "About", value: "about", icon: User },
   { label: "Education", value: "education", icon: BookOpen },
   { label: "Tech Stack", value: "techstack", icon: Code2 },
@@ -194,4 +194,5 @@ export default function AdminLayout({
       </div>
     </div>
   )
+
 }
