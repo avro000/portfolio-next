@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    const hero = await db
-      .collection("hero")
-      .findOne({ key: "main" });
+    const hero = await db.collection("hero").findOne({ key: "main" });
 
     return NextResponse.json(hero ?? {});
   } catch (error) {
