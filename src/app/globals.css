@@ -10,10 +10,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body {
-  overflow-x: hidden;
-}
-
 /* Animations */
 @keyframes gradient {
   0% {
