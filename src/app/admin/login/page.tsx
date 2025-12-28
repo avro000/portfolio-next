@@ -48,10 +48,10 @@ export default function AdminLogin() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-700/50 backdrop-blur-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-linear-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-700/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="inline-flex items-center justify-center w-9 sm:w-10 h-9 sm:h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg">
+            <div className="inline-flex items-center justify-center w-9 sm:w-10 h-9 sm:h-10 rounded-lg bg-linear-to-br from-cyan-500 to-blue-500 shadow-lg">
               <span className="text-white font-bold text-base sm:text-lg">AP</span>
             </div>
             <span className="text-white font-semibold text-base sm:text-lg">Admin Portal</span>
@@ -59,7 +59,7 @@ export default function AdminLogin() {
         </div>
       </nav>
 
-      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-3 sm:px-4 py-6 sm:py-8 pt-20 sm:pt-24 md:pt-28">
+      <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 px-3 sm:px-4 py-6 sm:py-8 pt-20 sm:pt-24 md:pt-28">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -76,14 +76,14 @@ export default function AdminLogin() {
 
           {error && (
             <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-2 sm:gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-              <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 sm:w-5 h-4 sm:h-5 text-red-400 shrink-0 mt-0.5" />
               <p className="text-red-300 text-xs sm:text-sm font-medium">{error}</p>
             </div>
           )}
 
           {success && (
             <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg bg-green-500/10 border border-green-500/30 flex items-start gap-2 sm:gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
-              <CheckCircle className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="w-4 sm:w-5 h-4 sm:h-5 text-green-400 shrink-0 mt-0.5" />
               <p className="text-green-300 text-xs sm:text-sm font-medium">{success}</p>
             </div>
           )}
@@ -135,7 +135,7 @@ export default function AdminLogin() {
           <button
             onClick={handleLogin}
             disabled={!isFormValid || isPending}
-            className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:from-slate-700 disabled:to-slate-700 text-white font-semibold py-2 sm:py-3 px-3 sm:px-4 text-sm sm:text-base rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-cyan-500/30 disabled:shadow-none flex items-center justify-center gap-2"
+            className="w-full bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:from-slate-700 disabled:to-slate-700 text-white font-semibold py-2 sm:py-3 px-3 sm:px-4 text-sm sm:text-base rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-cyan-500/30 disabled:shadow-none flex items-center justify-center gap-2"
           >
             {isPending ? (
               <>
