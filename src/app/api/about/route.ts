@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
-/* GET ABOUT */
+export const dynamic = "force-dynamic";
+
+/* ============ GET ABOUT ============ */
 export async function GET() {
   try {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    const about = await db
-      .collection("about")
-      .findOne({ key: "about" });
+    const about = await db.collection("about").findOne({ key: "about" });
 
     return NextResponse.json(about ?? {});
-  } catch (err) {
+  } catch (error) {
+    console.error("GET ABOUT ERROR:", error);
     return NextResponse.json(
       { error: "Failed to fetch about" },
       { status: 500 }
@@ -20,11 +21,13 @@ export async function GET() {
   }
 }
 
-/* UPDATE ABOUT */
+/* ============ UPDATE ABOUT ============ */
 export async function PUT(req: Request) {
   try {
     const rawBody = await req.json();
-    const { _id, ...body } = rawBody; // remove _id
+
+    // Avoid accidental overwrite of _id
+    const { _id, ...body } = rawBody;
 
     const client = await clientPromise;
     const db = client.db("portfolio");
@@ -42,7 +45,8 @@ export async function PUT(req: Request) {
     );
 
     return NextResponse.json({ success: true });
-  } catch (err) {
+  } catch (error) {
+    console.error("PUT ABOUT ERROR:", error);
     return NextResponse.json(
       { error: "Failed to update about" },
       { status: 500 }

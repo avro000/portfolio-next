@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 
+export const dynamic = "force-dynamic";
+
+/* GET CONTACT */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -11,7 +14,8 @@ export async function GET() {
       .findOne({ key: "contact" });
 
     return NextResponse.json(contact ?? {});
-  } catch (e) {
+  } catch (error) {
+    console.error("GET CONTACT ERROR:", error);
     return NextResponse.json(
       { error: "Failed to fetch contact" },
       { status: 500 }
@@ -19,9 +23,12 @@ export async function GET() {
   }
 }
 
+/* UPDATE CONTACT */
 export async function PUT(req: Request) {
   try {
-    const body = await req.json();
+    const raw = await req.json();
+    const { _id, ...body } = raw;
+
     const client = await clientPromise;
     const db = client.db("portfolio");
 
@@ -29,9 +36,8 @@ export async function PUT(req: Request) {
       { key: "contact" },
       {
         $set: {
-          email: body.email,
-          phone: body.phone,
-          location: body.location,
+          ...body,
+          key: "contact",
           updatedAt: new Date(),
         },
       },
@@ -39,9 +45,10 @@ export async function PUT(req: Request) {
     );
 
     return NextResponse.json({ success: true });
-  } catch (e) {
+  } catch (error) {
+    console.error("PUT CONTACT ERROR:", error);
     return NextResponse.json(
-      { error: "Update failed" },
+      { error: "Failed to update contact" },
       { status: 500 }
     );
   }
