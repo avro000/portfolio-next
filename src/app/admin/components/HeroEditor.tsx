@@ -84,7 +84,7 @@ export default function HeroEditor() {
       </div>
 
       <div className="w-full bg-linear-to-br from-slate-800/50 to-slate-900/30 backdrop-blur-xl rounded-2xl p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 border border-cyan-500/20 shadow-2xl">
-        {/* NAME */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -99,7 +99,7 @@ export default function HeroEditor() {
           />
         </div>
 
-        {/* ROLE */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -114,7 +114,7 @@ export default function HeroEditor() {
           />
         </div>
 
-        {/* DESCRIPTION */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -130,7 +130,7 @@ export default function HeroEditor() {
           />
         </div>
 
-        {/* LINKS */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-2 sm:space-y-3">
             <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
@@ -161,7 +161,7 @@ export default function HeroEditor() {
           </div>
         </div>
 
-        {/* EMAIL */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -176,7 +176,7 @@ export default function HeroEditor() {
           />
         </div>
 
-        {/* ACTION BUTTONS */}
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 pt-4">
           <button
             onClick={saveHero}

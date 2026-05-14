@@ -2,6 +2,7 @@
 
 import { Github, Linkedin, Mail, ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTypewriter } from "../hooks/useTypewriter";
 
 type HeroData = {
   name?: string;
@@ -17,108 +18,127 @@ export default function Hero() {
   const [data, setData] = useState<HeroData>({});
 
   useEffect(() => {
-    setIsVisible(true);
+    setTimeout(() => setIsVisible(true), 100);
 
     const fetchHero = async () => {
       const res = await fetch("/api/hero");
       const json = await res.json();
       setData(json);
     };
-
     fetchHero();
   }, []);
 
   const scrollToNext = () => {
-    document
-      .getElementById("about")
-      ?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const firstName = data.name?.split(" ")[0] ?? "";
+  const lastName = data.name?.split(" ").slice(1).join(" ") ?? "";
+  const { displayed: typedRole, done: roleDone } = useTypewriter(
+    data.role ?? "",
+    isVisible && !!data.role,
+    40
+  );
 
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      className="min-h-screen flex items-center relative overflow-hidden pt-20"
     >
-      {/* background effects remain unchanged */}
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div
+            className={`transition-all duration-1000 delay-200 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <p className="section-label mb-6">Portfolio — 2024</p>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div
-          className={`text-center transition-all duration-1000 ${
-            isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10"
-          }`}
-        >
-          <div className="mb-6">
-            <h2 className="text-lg sm:text-xl text-cyan-400 mb-2 animate-fade-in">
-              Hello, I&apos;m
-            </h2>
-
-            <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-4
-              bg-linear-to-r from-cyan-400 via-blue-500 to-cyan-400
-              bg-clip-text text-transparent animate-gradient bg-size-[200%_auto]"
-            >
-              {data.name ?? ""}
+            <h1 className="heading-editorial text-[clamp(3rem,8vw,7rem)] mb-8">
+              {firstName}
+              {lastName && (
+                <>
+                  <br />
+                  {lastName}
+                </>
+              )}
             </h1>
 
-            <div className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 mb-8">
-              <span className="inline-block animate-slide-up">
-                {data.role ?? ""}
-              </span>
+            <div className="flex items-center gap-6 mt-10">
+              {data.githubUrl && (
+                <a
+                  href={data.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 flex items-center gap-2"
+                >
+                  <span className="text-[var(--color-text-muted)]">[</span>
+                  <Github size={14} />
+                  <span>Github</span>
+                  <span className="text-[var(--color-text-muted)]">]</span>
+                </a>
+              )}
+              {data.linkedinUrl && (
+                <a
+                  href={data.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 flex items-center gap-2"
+                >
+                  <span className="text-[var(--color-text-muted)]">[</span>
+                  <Linkedin size={14} />
+                  <span>LinkedIn</span>
+                  <span className="text-[var(--color-text-muted)]">]</span>
+                </a>
+              )}
+              {data.email && (
+                <a
+                  href={`mailto:${data.email}`}
+                  className="text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300 flex items-center gap-2"
+                >
+                  <span className="text-[var(--color-text-muted)]">[</span>
+                  <Mail size={14} />
+                  <span>Email</span>
+                  <span className="text-[var(--color-text-muted)]">]</span>
+                </a>
+              )}
             </div>
           </div>
 
-          <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-            {data.description ?? ""}
-          </p>
+          <div
+            className={`transition-all duration-1000 delay-500 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <p className="text-[var(--color-text-muted)] text-lg sm:text-xl leading-relaxed mb-8">
+              {data.description ?? ""}
+            </p>
 
-          {/* SOCIAL LINKS */}
-          <div className="flex justify-center space-x-6 mb-12">
-            {data.githubUrl && (
-              <a
-                href={data.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-slate-800 rounded-full hover:bg-cyan-500
-                           hover:scale-110 transition-all duration-300
-                           hover:shadow-lg hover:shadow-cyan-500/50"
-              >
-                <Github size={24} />
-              </a>
-            )}
+            <div className="w-full h-px bg-[var(--color-border)] mb-8"></div>
 
-            {data.linkedinUrl && (
-              <a
-                href={data.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-slate-800 rounded-full hover:bg-cyan-500
-                           hover:scale-110 transition-all duration-300
-                           hover:shadow-lg hover:shadow-cyan-500/50"
-              >
-                <Linkedin size={24} />
-              </a>
-            )}
-
-            {data.email && (
-              <a
-                href={data.email}
-                className="p-3 bg-slate-800 rounded-full hover:bg-cyan-500
-                           hover:scale-110 transition-all duration-300
-                           hover:shadow-lg hover:shadow-cyan-500/50"
-              >
-                <Mail size={24} />
-              </a>
-            )}
+            <p className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium leading-tight text-[var(--color-text)]">
+              {typedRole}
+              {!roleDone && <span className="inline-block w-[2px] h-[1em] bg-[var(--color-text)] ml-0.5 animate-pulse" />}
+            </p>
           </div>
+        </div>
 
+        <div
+          className={`mt-20 lg:mt-32 flex justify-center transition-all duration-1000 delay-700 ${
+            isVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <button
             onClick={scrollToNext}
-            className="animate-bounce inline-flex items-center space-x-2
-                       text-cyan-400 hover:text-cyan-300 transition-colors"
+            className="flex flex-col items-center gap-3 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors group"
           >
-            <span>Explore More</span>
-            <ArrowDown size={20} />
+            <span className="text-[11px] font-medium tracking-[0.15em] uppercase">
+              Scroll to explore
+            </span>
+            <ArrowDown
+              size={16}
+              className="group-hover:translate-y-1 transition-transform duration-300"
+            />
           </button>
         </div>
       </div>

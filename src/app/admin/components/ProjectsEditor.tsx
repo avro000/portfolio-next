@@ -130,7 +130,7 @@ export default function ProjectsEditor() {
         </div>
 
         <div className="space-y-4">
-          {/* TITLE */}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">Project Title</label>
             <input
@@ -142,7 +142,7 @@ export default function ProjectsEditor() {
             />
           </div>
 
-          {/* DESCRIPTION */}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">Description</label>
             <textarea
@@ -155,7 +155,7 @@ export default function ProjectsEditor() {
             />
           </div>
 
-          {/* ICON */}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">Icon</label>
             <select
@@ -173,7 +173,7 @@ export default function ProjectsEditor() {
             </select>
           </div>
 
-          {/* TECH STACK */}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">Tech Stack (comma separated)</label>
             <input
@@ -185,7 +185,7 @@ export default function ProjectsEditor() {
             />
           </div>
 
-          {/* LINKS */}
+
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium text-cyan-300">Live Demo URL</label>

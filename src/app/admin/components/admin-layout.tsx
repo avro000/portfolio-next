@@ -31,7 +31,7 @@ type Section = "dashboard" | "hero" | "about" | "education" | "techstack" | "cer
 
 const navItems: { label: string; value: Section; icon: any }[] = [
   { label: "Dashboard", value: "dashboard", icon: LayoutDashboard },
-  { label: "Hero Section", value: "hero", icon: Sparkles },
+  { label: "Hero", value: "hero", icon: Sparkles },
   { label: "About", value: "about", icon: User },
   { label: "Education", value: "education", icon: BookOpen },
   { label: "Tech Stack", value: "techstack", icon: Code2 },
@@ -145,7 +145,7 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Mobile Overlay */}
+
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
@@ -156,7 +156,7 @@ export default function AdminLayout({
       <div
         className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${desktopCollapsed ? "lg:ml-20" : "lg:ml-64"}`}
       >
-        {/* Mobile Header */}
+
         <div className="lg:hidden flex items-center justify-between px-4 py-3 border-b border-cyan-500/20 bg-linear-to-r from-cyan-500/5 to-blue-500/5 shrink-0 sticky top-0 z-30 backdrop-blur-xl">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-linear-to-br from-cyan-400 to-blue-500 flex items-center justify-center font-bold text-white text-xs shrink-0">
@@ -175,7 +175,7 @@ export default function AdminLayout({
           </button>
         </div>
 
-        {/* Desktop Header */}
+
         <div className="hidden lg:flex items-center justify-between px-4 py-4 border-b border-cyan-500/20 bg-linear-to-r from-cyan-500/5 to-blue-500/5 shrink-0 sticky top-0 z-30 backdrop-blur-xl">
           <div>
             <h1 className="text-xl font-bold text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-400">
@@ -187,7 +187,7 @@ export default function AdminLayout({
           </div>
         </div>
 
-        {/* Main Content - Scrollable */}
+
         <main className="flex-1 overflow-y-auto">
           <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">{renderSection()}</div>
         </main>

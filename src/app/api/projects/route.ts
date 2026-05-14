@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-/* ================= GET ALL PROJECTS ================= */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -24,7 +23,6 @@ export async function GET() {
   }
 }
 
-/* ================= CREATE PROJECT ================= */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -36,8 +34,8 @@ export async function POST(req: Request) {
       key: "projects",
       title: body.title,
       description: body.description,
-      icon: body.icon,        
-      tech: body.tech || [],    
+      icon: body.icon,
+      tech: body.tech || [],
       link: body.link,
       github: body.github,
       updatedAt: new Date(),
@@ -53,7 +51,6 @@ export async function POST(req: Request) {
   }
 }
 
-/* ================= UPDATE PROJECT ================= */
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
@@ -82,7 +79,6 @@ export async function PUT(req: Request) {
   }
 }
 
-/* ================= DELETE PROJECT ================= */
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();

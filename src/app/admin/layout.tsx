@@ -11,11 +11,9 @@ export default function AdminRootLayout({
 }) {
   const pathname = usePathname()
 
-  // Allow login page without the admin layout wrapper
   if (pathname === "/admin/login") {
     return <>{children}</>
   }
 
-  // Wrap everything else with AdminLayout
   return <AdminLayout>{children}</AdminLayout>
 }

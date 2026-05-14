@@ -11,6 +11,7 @@ import Certificates from '@/components/Certificates';
 import Projects from '@/components/Projects';
 import Contact from '@/components/Contact';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home');
@@ -44,16 +45,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       <Navigation activeSection={activeSection} />
       <Hero />
       <About />
       <Education />
       <Skills />
       <TechStack />
-      <Certificates />
       <Projects />
+      <Certificates />
       <Contact />
+      <Footer />
     </div>
   );
 }

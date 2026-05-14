@@ -3,7 +3,6 @@ import clientPromise from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-/* ============ GET ABOUT ============ */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -21,12 +20,9 @@ export async function GET() {
   }
 }
 
-/* ============ UPDATE ABOUT ============ */
 export async function PUT(req: Request) {
   try {
     const rawBody = await req.json();
-
-    // Avoid accidental overwrite of _id
     const { _id, ...body } = rawBody;
 
     const client = await clientPromise;

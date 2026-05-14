@@ -125,7 +125,7 @@ export default function EducationAdmin() {
             </div>
           ))}
 
-          {/* ICON DROPDOWN */}
+
           <div className="space-y-2">
             <label className="text-sm font-medium text-cyan-300">Icon</label>
             <select

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-/* GET all education */
 export async function GET() {
   const client = await clientPromise;
   const db = client.db("portfolio");
@@ -16,7 +15,6 @@ export async function GET() {
   return NextResponse.json(education);
 }
 
-/* CREATE education */
 export async function POST(req: Request) {
   const body = await req.json();
   const client = await clientPromise;
@@ -27,7 +25,6 @@ export async function POST(req: Request) {
   return NextResponse.json({ insertedId: result.insertedId });
 }
 
-/* UPDATE education */
 export async function PUT(req: Request) {
   const body = await req.json();
   const { id, ...data } = body;
@@ -48,7 +45,6 @@ export async function PUT(req: Request) {
   return NextResponse.json({ success: true });
 }
 
-/* DELETE education */
 export async function DELETE(req: Request) {
   const { id } = await req.json();
 

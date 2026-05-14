@@ -1,8 +1,9 @@
 "use client";
 
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "../hooks/useInView";
+import { useTypewriter } from "../hooks/useTypewriter";
 
 type ContactInfo = {
   email?: string;
@@ -12,6 +13,8 @@ type ContactInfo = {
 
 export default function Contact() {
   const [ref, isInView] = useInView({ threshold: 0.2 });
+  const heading = "Have a project in mind? Let's talk.";
+  const { displayed: typedHeading, done: headingDone } = useTypewriter(heading, isInView, 30);
 
   const [contact, setContact] = useState<ContactInfo>({
     email: "",
@@ -29,15 +32,13 @@ export default function Contact() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  /* FETCH CONTACT INFO */
   useEffect(() => {
     fetch("/api/contact")
       .then((r) => r.json())
       .then((d) => setContact(d ?? {}))
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
-  /* SUBMIT MESSAGE */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -56,157 +57,134 @@ export default function Contact() {
       setSuccess(true);
       setFormData({ name: "", email: "", message: "" });
     }
-
     setLoading(false);
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      label: "Email",
-      value: contact.email || "avpodder000@gmail.com",
-      link: `mailto:${contact.email || "avpodder000@gmail.com"}`,
-    },
-    {
-      icon: Phone,
-      label: "Phone",
-      value: contact.phone || "Not available",
-    },
-    {
-      icon: MapPin,
-      label: "Location",
-      value: contact.location || "India",
-    },
-  ];
-
   return (
-    <section id="contact" className="min-h-screen flex items-center py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <section id="contact" className="py-24 sm:py-32 lg:py-40 bg-[var(--color-bg-dark)]">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
         <div
           ref={ref}
-          className={`transition-all duration-1000 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}
+          className={`transition-all duration-1000 ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
-          {/* HEADING */}
-          <h2 className="text-4xl sm:text-5xl font-bold text-center mb-4 bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Get In Touch
-          </h2>
-          <div className="w-24 h-1 bg-linear-to-r from-cyan-400 to-blue-500 mx-auto mb-12"></div>
+          <div className="flex items-center gap-6 mb-16">
+            <span className="text-[0.75rem] font-medium tracking-[0.15em] uppercase text-[#8A847D]">Get In Touch</span>
+            <div className="flex-1 h-px bg-[#3A3A3A]"></div>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            {/* LEFT INFO — PRESERVED */}
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-semibold mb-4 text-white">
-                  Let's work together!
-                </h3>
-                <p className="text-gray-400 leading-relaxed">
-                  I'm always open to discussing new projects, creative ideas, or
-                  opportunities to be part of your vision. Feel free to reach
-                  out through any of the channels below.
-                </p>
-              </div>
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
+            <div>
+              <h2 className="font-serif font-bold leading-[1.05] tracking-[-0.02em] text-[#EDE8E2] text-[clamp(2rem,4vw,3.5rem)] mb-8">
+                {typedHeading}
+                {!headingDone && <span className="inline-block w-[2px] h-[1em] bg-[#EDE8E2] ml-0.5 animate-pulse" />}
+              </h2>
 
-              <div className="space-y-4">
-                {contactInfo.map((info, index) => (
+              <p className="text-[#8A847D] text-base sm:text-lg leading-relaxed mb-12">
+                I&apos;m always open to discussing new projects, creative ideas,
+                or opportunities to be part of your vision.
+              </p>
+
+              <div className="space-y-6">
+                <div className="border-t border-[#3A3A3A] pt-6">
+                  <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-2">
+                    EMAIL
+                  </span>
                   <a
-                    key={index}
-                    href={info.link}
-                    className={`flex items-center space-x-4 p-4 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 hover:border-cyan-500/50 transition-all duration-300 hover:transform hover:scale-105 ${
-                      isInView
-                        ? "opacity-100 translate-x-0"
-                        : "opacity-0 -translate-x-10"
-                    }`}
-                    style={{ transitionDelay: `${index * 100}ms` }}
+                    href={`mailto:${contact.email || "avpodder000@gmail.com"}`}
+                    className="text-[#EDE8E2] hover:opacity-70 transition-opacity text-base sm:text-lg"
                   >
-                    <div className="p-3 bg-linear-to-r from-cyan-400 to-blue-500 rounded-lg">
-                      <info.icon size={24} className="text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400">{info.label}</p>
-                      <p className="text-white">{info.value}</p>
-                    </div>
+                    {contact.email || "avpodder000@gmail.com"}
                   </a>
-                ))}
+                </div>
+
+                {contact.phone && (
+                  <div className="border-t border-[#3A3A3A] pt-6">
+                    <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-2">
+                      PHONE
+                    </span>
+                    <p className="text-[#EDE8E2] text-base sm:text-lg">
+                      {contact.phone}
+                    </p>
+                  </div>
+                )}
+
+                <div className="border-t border-[#3A3A3A] pt-6">
+                  <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-2">
+                    LOCATION
+                  </span>
+                  <p className="text-[#EDE8E2] text-base sm:text-lg">
+                    {contact.location || "India"}
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* FORM — PRESERVED */}
-            <form
-              onSubmit={handleSubmit}
-              className={`space-y-6 ${
-                isInView
-                  ? "opacity-100 translate-x-0"
-                  : "opacity-0 translate-x-10"
-              }`}
-              style={{ transitionDelay: "200ms" }}
-            >
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Name
-                </label>
-                <input
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg focus:outline-none focus:border-cyan-500 transition-colors text-white"
-                  required
-                />
-              </div>
+            <div>
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div>
+                  <label className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-3">
+                    Name
+                  </label>
+                  <input
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    className="w-full px-0 py-3 bg-transparent border-b border-[#3A3A3A] focus:border-[#EDE8E2] focus:outline-none transition-colors text-[#EDE8E2] text-base"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg focus:outline-none focus:border-cyan-500 transition-colors text-white"
-                  required
-                />
-              </div>
+                <div>
+                  <label className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-3">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    className="w-full px-0 py-3 bg-transparent border-b border-[#3A3A3A] focus:border-[#EDE8E2] focus:outline-none transition-colors text-[#EDE8E2] text-base"
+                    required
+                  />
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Message
-                </label>
-                <textarea
-                  rows={6}
-                  value={formData.message}
-                  onChange={(e) =>
-                    setFormData({ ...formData, message: e.target.value })
-                  }
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg focus:outline-none focus:border-cyan-500 transition-colors text-white resize-none"
-                  required
-                />
-              </div>
+                <div>
+                  <label className="text-[11px] font-medium tracking-[0.15em] uppercase text-[#8A847D] block mb-3">
+                    Message
+                  </label>
+                  <textarea
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) =>
+                      setFormData({ ...formData, message: e.target.value })
+                    }
+                    className="w-full px-0 py-3 bg-transparent border-b border-[#3A3A3A] focus:border-[#EDE8E2] focus:outline-none transition-colors text-[#EDE8E2] text-base resize-none"
+                    required
+                  />
+                </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-linear-to-r from-cyan-400 to-blue-500 rounded-lg hover:opacity-90 transition-opacity font-medium"
-              >
-                <span>{loading ? "Sending..." : "Send Message"}</span>
-                <Send size={18} />
-              </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex items-center gap-3 px-8 py-4 border border-[#EDE8E2] text-[#EDE8E2] text-[11px] font-medium tracking-[0.15em] uppercase hover:bg-[#EDE8E2] hover:text-[var(--color-bg-dark)] transition-all duration-300 disabled:opacity-50"
+                >
+                  <span>{loading ? "Sending..." : "Send Message"}</span>
+                  <Send size={14} />
+                </button>
 
-              {success && (
-                <p className="text-green-400">
-                  Message sent successfully
-                </p>
-              )}
-              {error && <p className="text-red-400">{error}</p>}
-            </form>
-          </div>
-
-          {/* FOOTER — PRESERVED */}
-          <div className="mt-16 text-center text-gray-400">
-            <p>&copy; 2024 Avra Podder. All rights reserved.</p>
+                {success && (
+                  <p className="text-[#EDE8E2] text-sm font-medium">
+                    Message sent successfully.
+                  </p>
+                )}
+                {error && (
+                  <p className="text-red-400 text-sm">{error}</p>
+                )}
+              </form>
+            </div>
           </div>
         </div>
       </div>

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-/* GET certificates */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -20,7 +19,6 @@ export async function GET() {
   }
 }
 
-/* CREATE certificate */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -44,7 +42,6 @@ export async function POST(req: Request) {
   }
 }
 
-/* UPDATE certificate */
 export async function PUT(req: Request) {
   try {
     const { id, ...data } = await req.json();
@@ -67,7 +64,6 @@ export async function PUT(req: Request) {
   }
 }
 
-/* DELETE certificate */
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();

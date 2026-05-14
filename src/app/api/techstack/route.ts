@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/db";
 import { ObjectId } from "mongodb";
 
-/* ================= GET tech stack ================= */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -24,7 +23,6 @@ export async function GET() {
   }
 }
 
-/* ================= CREATE tech ================= */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -48,7 +46,6 @@ export async function POST(req: Request) {
   }
 }
 
-/* ================= UPDATE tech ================= */
 export async function PUT(req: Request) {
   try {
     const body = await req.json();
@@ -78,7 +75,6 @@ export async function PUT(req: Request) {
   }
 }
 
-/* ================= DELETE tech ================= */
 export async function DELETE(req: Request) {
   try {
     const { id } = await req.json();

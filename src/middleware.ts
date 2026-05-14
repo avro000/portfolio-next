@@ -9,7 +9,6 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Protect admin routes
   if (pathname.startsWith("/admin")) {
     const token = await getToken({
       req,
@@ -17,9 +16,7 @@ export async function middleware(req: NextRequest) {
     });
 
     if (!token) {
-      return NextResponse.redirect(
-        new URL("/admin/login", req.url)
-      );
+      return NextResponse.redirect(new URL("/admin/login", req.url));
     }
   }
 

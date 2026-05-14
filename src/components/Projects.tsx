@@ -1,44 +1,9 @@
 "use client";
 
-import {
-  Code2,
-  Laptop,
-  Globe,
-  Database,
-  Server,
-  Layers,
-  Cpu,
-  Rocket,
-  BookOpen,
-  Dumbbell,
-  Cloud,
-  Shield,
-  ExternalLink,
-  Github,
-} from "lucide-react";
-
-const ICONS: Record<string, any> = {
-  Code2,
-  Laptop,
-  Globe,
-  Database,
-  Server,
-  Layers,
-  Cpu,
-  Rocket,
-  BookOpen,
-  Dumbbell,
-  Cloud,
-  Shield,
-};
-
+import { ArrowUpRight, Github } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useInView } from "../hooks/useInView";
-
-const GRADIENTS = [
-  "from-cyan-400 to-blue-500",
-  "from-blue-500 to-cyan-400",
-];
+import { useTypewriter } from "../hooks/useTypewriter";
 
 type Project = {
   _id: string;
@@ -51,10 +16,11 @@ type Project = {
 };
 
 export default function Projects() {
-  const [ref, isInView] = useInView({ threshold: 0.2 });
+  const [ref, isInView] = useInView({ threshold: 0.1 });
   const [projects, setProjects] = useState<Project[]>([]);
+  const heading = "Work that speaks for itself.";
+  const { displayed: typedHeading, done: headingDone } = useTypewriter(heading, isInView, 30);
 
-  /* FETCH PROJECTS */
   useEffect(() => {
     const fetchProjects = async () => {
       const res = await fetch("/api/projects");
@@ -65,101 +31,90 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="min-h-screen flex items-center py-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-24 sm:py-32 lg:py-40 bg-[var(--color-bg-cream)]">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
         <div
           ref={ref}
-          className={`transition-all duration-1000 ${isInView
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10"
-            }`}
+          className={`transition-all duration-1000 ${
+            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
         >
-          {/* HEADING */}
-          <h2 className="text-4xl sm:text-5xl font-bold text-center mb-4 bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            Featured Projects
+          <div className="flex items-center gap-6 mb-16">
+            <span className="section-label">Featured Projects</span>
+            <div className="flex-1 h-px bg-[var(--color-border)]"></div>
+            <span className="section-label">{projects.length}</span>
+          </div>
+
+          <h2 className="heading-editorial text-[clamp(2rem,4vw,3.5rem)] mb-16 max-w-3xl">
+            {typedHeading}
+            {!headingDone && <span className="inline-block w-[2px] h-[1em] bg-[var(--color-text)] ml-0.5 animate-pulse" />}
           </h2>
-          <div className="w-24 h-1 bg-linear-to-r from-cyan-400 to-blue-500 mx-auto mb-12"></div>
 
-          {/* PROJECT GRID */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {projects.map((project, index) => {
-              const Icon = ICONS[project.icon] || Code2;
-              const gradient =
-                GRADIENTS[index % GRADIENTS.length];
-
-              return (
-                <div
-                  key={project._id}
-                  className={`group relative bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden hover:border-cyan-500/50 transition-all duration-500 hover:transform hover:scale-[1.02] ${isInView
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-10"
-                    }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  {/* TOP GRADIENT LINE */}
-                  <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${gradient}`}
-                  ></div>
-
-                  <div className="p-8">
-                    {/* ICON */}
-                    <div
-                      className={`inline-block p-3 bg-linear-to-r ${gradient} rounded-xl mb-6 group-hover:scale-110 transition-transform duration-300`}
-                    >
-                      <Icon size={32} className="text-white" />
+          <div className="space-y-0">
+            {projects.map((project, index) => (
+              <div
+                key={project._id}
+                className={`group border-t border-[var(--color-border)] transition-all duration-700 ${
+                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div className="py-8 sm:py-10 group-hover:bg-[var(--color-bg-alt)]/50 px-4 -mx-4 transition-colors duration-300">
+                  <div className="grid sm:grid-cols-12 gap-4 sm:gap-6 items-start">
+                    <div className="sm:col-span-4">
+                      <h3 className="font-serif text-xl sm:text-2xl font-semibold text-[var(--color-text)] group-hover:translate-x-2 transition-transform duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-[var(--color-text-muted)] mt-2">
+                        PRJ-{String(index + 1).padStart(2, "0")}
+                      </p>
                     </div>
 
-                    {/* TITLE */}
-                    <h3 className="text-2xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors">
-                      {project.title}
-                    </h3>
+                    <div className="sm:col-span-4">
+                      <p className="text-[var(--color-text-muted)] text-sm leading-relaxed line-clamp-3">
+                        {project.description}
+                      </p>
+                    </div>
 
-                    {/* DESCRIPTION */}
-                    <p className="text-gray-400 mb-6 leading-relaxed">
-                      {project.description}
-                    </p>
+                    <div className="sm:col-span-2">
+                      <p className="text-[11px] font-medium tracking-[0.08em] uppercase text-[var(--color-text-muted)] leading-relaxed">
+                        {project.tech.join(" · ")}
+                      </p>
+                    </div>
 
-                    {/* TECH STACK */}
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tech.map((tech, i) => (
-                        <span
-                          key={i}
-                          className="px-3 py-1 bg-slate-700/50 rounded-full text-sm text-cyan-400 border border-slate-600/50"
+                    <div className="sm:col-span-2 flex sm:flex-col sm:items-end gap-3">
+                      {project.link && (
+                        <a
+                          href={project.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.1em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300"
                         >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* LINKS */}
-                    <div className="flex space-x-4">
-                      <a
-                        href={project.link}
-                        target="_blank"
-                        className="flex items-center space-x-2 px-4 py-2 bg-linear-to-r from-cyan-400 to-blue-500 rounded-lg hover:opacity-90 transition-opacity"
-                      >
-                        <ExternalLink size={18} />
-                        <span>Live Demo</span>
-                      </a>
-
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        className="flex items-center space-x-2 px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-600 transition-colors"
-                      >
-                        <Github size={18} />
-                        <span>Code</span>
-                      </a>
+                          <span>[</span>
+                          <span>Live</span>
+                          <ArrowUpRight size={12} />
+                          <span>]</span>
+                        </a>
+                      )}
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-[0.1em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300"
+                        >
+                          <span>[</span>
+                          <Github size={12} />
+                          <span>Code</span>
+                          <span>]</span>
+                        </a>
+                      )}
                     </div>
                   </div>
-
-                  {/* HOVER OVERLAY */}
-                  <div
-                    className={`absolute inset-0 bg-linear-to-r ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none`}
-                  ></div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
+            <div className="border-t border-[var(--color-border)]"></div>
           </div>
         </div>
       </div>

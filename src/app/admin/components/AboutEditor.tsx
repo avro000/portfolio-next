@@ -96,7 +96,7 @@ export default function AboutEditor() {
       </div>
 
       <div className="w-full bg-linear-to-br from-slate-800/50 to-slate-900/30 backdrop-blur-xl rounded-2xl p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6 border border-cyan-500/20 shadow-2xl">
-        {/* PARAGRAPH 1 */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -112,7 +112,7 @@ export default function AboutEditor() {
           />
         </div>
 
-        {/* PARAGRAPH 2 */}
+
         <div className="space-y-2 sm:space-y-3">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -128,7 +128,7 @@ export default function AboutEditor() {
           />
         </div>
 
-        {/* IMAGE UPLOAD */}
+
         <div className="space-y-4">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -170,7 +170,7 @@ export default function AboutEditor() {
           )}
         </div>
 
-        {/* HIGHLIGHTS */}
+
         <div className="space-y-4 pt-4 border-t border-slate-700/50">
           <label className="text-xs sm:text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -217,7 +217,7 @@ export default function AboutEditor() {
           </div>
         </div>
 
-        {/* SAVE BUTTON */}
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 pt-4">
           <button
             onClick={save}

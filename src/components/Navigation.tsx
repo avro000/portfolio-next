@@ -1,5 +1,7 @@
+'use client';
+
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface NavigationProps {
   activeSection: string;
@@ -7,16 +9,20 @@ interface NavigationProps {
 
 export default function Navigation({ activeSection }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
-    { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'education', label: 'Education' },
     { id: 'skills', label: 'Skills' },
-    { id: 'techstack', label: 'Tech Stack' },
-    { id: 'certificates', label: 'Certificates' },
     { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'certificates', label: 'Certifications' },
   ];
 
   const scrollToSection = (id: string) => {
@@ -26,54 +32,81 @@ export default function Navigation({ activeSection }: NavigationProps) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-lg border-b border-slate-700/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="text-2xl font-bold bg-linear-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled
+          ? 'bg-[var(--color-bg)]/95 backdrop-blur-sm shadow-[0_1px_0_var(--color-border)]'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          <button
+            onClick={() => scrollToSection('home')}
+            className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[var(--color-text)] hover:opacity-70 transition-opacity"
+          >
             AP
-          </div>
+          </button>
 
-          <div className="hidden md:block">
-            <div className="flex space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`transition-colors duration-300 hover:text-cyan-400 ${
-                    activeSection === item.id ? 'text-cyan-400' : 'text-gray-300'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
+          <div className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className="text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300"
+              >
+                {activeSection === item.id
+                  ? `[${item.label}]`
+                  : item.label}
+              </button>
+            ))}
+
+            <button
+              onClick={() => scrollToSection('contact')}
+              className={`text-[11px] font-medium tracking-[0.15em] uppercase px-5 py-2 border transition-all duration-300 ${
+                activeSection === 'contact'
+                  ? 'border-[var(--color-text)] bg-[var(--color-text)] text-[var(--color-bg)]'
+                  : 'border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-text)] hover:text-[var(--color-bg)]'
+              }`}
+            >
+              Contact
+            </button>
           </div>
 
           <button
-            className="md:hidden"
+            className="md:hidden p-2 text-[var(--color-text)]"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-slate-800/95 backdrop-blur-lg">
-          <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="md:hidden bg-[var(--color-bg)] border-t border-[var(--color-border)]">
+          <div className="px-6 py-6 space-y-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`block w-full text-left px-3 py-2 rounded-md transition-colors duration-300 ${
+                className={`block w-full text-left px-4 py-3 text-[12px] font-medium tracking-[0.15em] uppercase transition-colors duration-300 ${
                   activeSection === item.id
-                    ? 'bg-slate-700 text-cyan-400'
-                    : 'text-gray-300 hover:bg-slate-700 hover:text-cyan-400'
+                    ? 'text-[var(--color-text)] bg-[var(--color-bg-alt)]'
+                    : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
                 }`}
               >
-                {item.label}
+                {activeSection === item.id
+                  ? `[${item.label}]`
+                  : item.label}
               </button>
             ))}
+            <button
+              onClick={() => scrollToSection('contact')}
+              className="block w-full text-left px-4 py-3 text-[12px] font-medium tracking-[0.15em] uppercase text-[var(--color-text)] mt-2 border-t border-[var(--color-border)]"
+            >
+              Contact
+            </button>
           </div>
         </div>
       )}

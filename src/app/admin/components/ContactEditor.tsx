@@ -66,7 +66,7 @@ export default function ContactEditor() {
       </div>
 
       <div className="bg-linear-to-br from-slate-800/50 to-slate-900/30 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-8 space-y-6 w-full shadow-2xl">
-        {/* EMAIL */}
+
         <div className="space-y-3">
           <label className="text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -81,7 +81,7 @@ export default function ContactEditor() {
           />
         </div>
 
-        {/* PHONE */}
+
         <div className="space-y-3">
           <label className="text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -96,7 +96,7 @@ export default function ContactEditor() {
           />
         </div>
 
-        {/* LOCATION */}
+
         <div className="space-y-3">
           <label className="text-sm font-semibold text-cyan-300 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
@@ -111,7 +111,7 @@ export default function ContactEditor() {
           />
         </div>
 
-        {/* SAVE BUTTON */}
+
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4">
           <button
             onClick={save}

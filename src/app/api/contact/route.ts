@@ -3,7 +3,6 @@ import clientPromise from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-/* GET CONTACT */
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -23,7 +22,6 @@ export async function GET() {
   }
 }
 
-/* UPDATE CONTACT */
 export async function PUT(req: Request) {
   try {
     const raw = await req.json();

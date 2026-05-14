@@ -1,5 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import clientPromise from "@/lib/db";
+import bcrypt from "bcrypt";
 
 const authOptions: AuthOptions = {
   providers: [
@@ -13,20 +15,31 @@ const authOptions: AuthOptions = {
         if (!credentials) return null;
 
         const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-
-        if (
-          credentials.email === adminEmail &&
-          credentials.password === adminPassword
-        ) {
-          return {
-            id: "admin-1",
-            name: "Admin",
-            email: adminEmail,
-          };
+        if (!adminEmail || credentials.email.toLowerCase() !== adminEmail) {
+          return null;
         }
 
-        return null;
+        const client = await clientPromise;
+        const db = client.db("portfolio");
+
+        const admin = await db
+          .collection("admins")
+          .findOne({ email: adminEmail });
+
+        if (!admin) return null;
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          admin.password
+        );
+
+        if (!isValid) return null;
+
+        return {
+          id: admin._id.toString(),
+          name: "Admin",
+          email: admin.email,
+        };
       },
     }),
   ],
