@@ -19,9 +19,37 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid request." }, { status: 400 });
     }
 
-    if (newPassword.length < 6) {
+    if (newPassword.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters." },
+        { error: "Password must be at least 8 characters." },
+        { status: 400 }
+      );
+    }
+
+    if (!/[A-Z]/.test(newPassword)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one uppercase letter." },
+        { status: 400 }
+      );
+    }
+
+    if (!/[a-z]/.test(newPassword)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one lowercase letter." },
+        { status: 400 }
+      );
+    }
+
+    if (!/[0-9]/.test(newPassword)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one number." },
+        { status: 400 }
+      );
+    }
+
+    if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword)) {
+      return NextResponse.json(
+        { error: "Password must contain at least one special character." },
         { status: 400 }
       );
     }

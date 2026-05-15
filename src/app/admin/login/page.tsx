@@ -133,8 +133,17 @@ export default function AdminLogin() {
     setLoading(false)
   }
 
+  const pwRules = [
+    { label: "8+ characters", met: newPassword.length >= 8 },
+    { label: "Uppercase letter", met: /[A-Z]/.test(newPassword) },
+    { label: "Lowercase letter", met: /[a-z]/.test(newPassword) },
+    { label: "Number", met: /[0-9]/.test(newPassword) },
+    { label: "Special character", met: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(newPassword) },
+  ]
+  const allRulesMet = pwRules.every((r) => r.met)
+
   const handleResetPassword = async () => {
-    if (newPassword.length < 6) { setError("Password must be at least 6 characters."); return }
+    if (!allRulesMet) { setError("Password does not meet all requirements."); return }
     if (newPassword !== confirmPassword) { setError("Passwords do not match."); return }
     clear(); setLoading(true)
     try {
@@ -409,6 +418,21 @@ export default function AdminLogin() {
                 </div>
               </div>
 
+              {/* Password requirements checklist */}
+              {newPassword && (
+                <div className="mb-5 p-4 border border-[var(--color-border)] bg-[var(--color-bg-warm,#D2C8BC)]/30">
+                  <p className="text-[10px] font-semibold tracking-[0.15em] uppercase text-[var(--color-text-muted)] mb-3">Requirements</p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+                    {pwRules.map((rule) => (
+                      <p key={rule.label} className={`text-xs flex items-center gap-1.5 transition-colors duration-300 ${rule.met ? "text-emerald-700" : "text-[var(--color-text-muted)]/60"}`}>
+                        <span className="text-[10px]">{rule.met ? "✓" : "○"}</span>
+                        {rule.label}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="mb-5">
                 <label className={labelClasses}>Confirm Password</label>
                 <div className="relative">
@@ -434,7 +458,7 @@ export default function AdminLogin() {
                 </p>
               )}
 
-              <SubmitBtn onClick={handleResetPassword} disabled={!newPassword || !confirmPassword || newPassword !== confirmPassword} loading={loading}>
+              <SubmitBtn onClick={handleResetPassword} disabled={!allRulesMet || !confirmPassword || newPassword !== confirmPassword} loading={loading}>
                 Reset Password <span className="text-xs opacity-60">→</span>
               </SubmitBtn>
             </div>
