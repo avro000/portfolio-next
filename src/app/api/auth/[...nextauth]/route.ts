@@ -3,8 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import clientPromise from "@/lib/db";
 import bcrypt from "bcryptjs";
 
-// Session lifetime in seconds — 10s for testing, change to 86400 (24hr) for production
-const SESSION_MAX_AGE = 10;
+const SESSION_MAX_AGE = 86400;
 
 const authOptions: AuthOptions = {
   providers: [
@@ -54,21 +53,38 @@ const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      // First sign-in: stamp the absolute expiry time
+      // First sign-in: stamp expiry and issue time
       if (user) {
         token.expiresAt = Date.now() + SESSION_MAX_AGE * 1000;
+        token.issuedAt = Date.now();
       }
 
-      // On subsequent requests: check if session has expired
+      // Check if session has expired by time
       if (token.expiresAt && Date.now() > (token.expiresAt as number)) {
-        // Return empty object to invalidate the session
         return {} as any;
+      }
+
+      // Check if password was changed after this token was issued (logout all devices)
+      if (token.email && token.issuedAt) {
+        try {
+          const client = await clientPromise;
+          const db = client.db("portfolio");
+          const admin = await db.collection("admins").findOne({ email: token.email as string });
+
+          if (admin?.passwordChangedAt) {
+            const changedAt = new Date(admin.passwordChangedAt).getTime();
+            if (changedAt > (token.issuedAt as number)) {
+              return {} as any;
+            }
+          }
+        } catch {
+          // DB error — don't invalidate, let it retry next poll
+        }
       }
 
       return token;
     },
     async session({ session, token }) {
-      // If the token was invalidated (no email), return empty session
       if (!token.email) {
         return {} as any;
       }

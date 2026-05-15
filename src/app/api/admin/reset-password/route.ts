@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
     await db.collection("admins").updateOne(
       { email: ADMIN_EMAIL },
-      { $set: { password: hashedPassword, updatedAt: new Date() } }
+      { $set: { password: hashedPassword, passwordChangedAt: new Date(), updatedAt: new Date() } }
     );
 
     await db.collection("otp_tokens").deleteMany({ email: ADMIN_EMAIL });

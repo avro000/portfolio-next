@@ -9,9 +9,7 @@ export default function SessionProvider({
 }) {
   return (
     <NextAuthSessionProvider
-      // Re-check session every 10 seconds (matches JWT maxAge for testing)
-      // Change to a longer interval like 60 for production
-      refetchInterval={10}
+      refetchInterval={60}
       refetchOnWindowFocus={true}
     >
       {children}
