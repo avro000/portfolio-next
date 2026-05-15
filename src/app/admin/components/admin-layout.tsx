@@ -133,7 +133,10 @@ export default function AdminLayout({
 
         <div className="p-4 border-t border-cyan-500/20 bg-linear-to-r from-red-500/5 to-transparent shrink-0">
           <button
-            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+            onClick={async () => {
+              await signOut({ redirect: false })
+              window.location.replace("/admin/login")
+            }}
             className={`w-full px-3 py-2.5 rounded-lg bg-red-500/20 text-red-300 hover:bg-red-500/40 border border-red-500/30 transition-all duration-300 font-medium hover:shadow-lg hover:shadow-red-500/20 flex items-center gap-3 group text-sm ${
               desktopCollapsed ? "lg:justify-center" : "justify-center"
             }`}

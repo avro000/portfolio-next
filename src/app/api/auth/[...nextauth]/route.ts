@@ -43,7 +43,7 @@ const authOptions: AuthOptions = {
       },
     }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: "jwt", maxAge: 10 }, // 10s for testing — change to 86400 (24hr) for production
   pages: { signIn: "/admin/login" },
   secret: process.env.NEXTAUTH_SECRET,
 };
