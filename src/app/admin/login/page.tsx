@@ -11,25 +11,36 @@ type Step = "login" | "forgot" | "otp" | "reset"
 function Alert({ type, msg }: { type: "error" | "success"; msg: string }) {
   const isErr = type === "error"
   return (
-    <div className={`mb-4 p-3 rounded-lg flex items-start gap-3 ${isErr ? "bg-red-500/10 border border-red-500/30" : "bg-green-500/10 border border-green-500/30"}`}>
-      {isErr ? <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" /> : <CheckCircle className="w-5 h-5 text-green-400 shrink-0 mt-0.5" />}
-      <p className={`text-sm font-medium ${isErr ? "text-red-300" : "text-green-300"}`}>{msg}</p>
+    <div className={`mb-5 px-4 py-3 border flex items-start gap-3 ${isErr ? "bg-red-50/50 border-red-300/50 text-red-800" : "bg-emerald-50/50 border-emerald-300/50 text-emerald-800"}`}>
+      {isErr ? <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" /> : <CheckCircle className="w-4 h-4 shrink-0 mt-0.5" />}
+      <p className="text-sm font-medium">{msg}</p>
     </div>
   )
 }
 
 function BackBtn({ to, onClick, disabled }: { to: Step; onClick: (s: Step) => void; disabled?: boolean }) {
   return (
-    <button onClick={() => onClick(to)} className="flex items-center gap-1.5 text-slate-400 hover:text-cyan-400 text-sm mb-6 transition-colors" disabled={disabled}>
-      <ArrowLeft className="w-4 h-4" /> Back
+    <button
+      onClick={() => onClick(to)}
+      className="flex items-center gap-1.5 text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-medium tracking-[0.1em] uppercase mb-8 transition-colors duration-300"
+      disabled={disabled}
+    >
+      <ArrowLeft className="w-3.5 h-3.5" /> Back
     </button>
   )
 }
 
 function SubmitBtn({ onClick, disabled, loading, children }: { onClick: () => void; disabled?: boolean; loading?: boolean; children: React.ReactNode }) {
   return (
-    <button onClick={onClick} disabled={disabled || loading} className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 disabled:from-slate-700 disabled:to-slate-700 text-white font-semibold py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-cyan-500/30 disabled:shadow-none flex items-center justify-center gap-2">
-      {loading ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : children}
+    <button
+      onClick={onClick}
+      disabled={disabled || loading}
+      className="w-full bg-[var(--color-text)] text-[var(--color-bg)] font-medium py-3.5 px-4 text-sm tracking-[0.05em] uppercase transition-all duration-300
+                 hover:opacity-90 hover:tracking-[0.1em]
+                 disabled:opacity-30 disabled:cursor-not-allowed
+                 flex items-center justify-center gap-2.5"
+    >
+      {loading ? <span className="w-4 h-4 border-2 border-[var(--color-bg)]/30 border-t-[var(--color-bg)] rounded-full animate-spin" /> : children}
     </button>
   )
 }
@@ -43,6 +54,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""])
   const otpRefs = useRef<(HTMLInputElement | null)[]>([])
@@ -53,6 +65,10 @@ export default function AdminLogin() {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => setMounted(true), 100)
+  }, [])
 
   useEffect(() => {
     if (otpTimer <= 0) return
@@ -150,168 +166,286 @@ export default function AdminLogin() {
 
   const masked = email ? email.replace(/(.{2})(.*)(@.*)/, "$1****$3") : "your email"
 
+  const inputClasses = "w-full pl-11 pr-4 py-3.5 text-sm bg-transparent border border-[var(--color-border)] text-[var(--color-text)] placeholder-[var(--color-text-muted)]/50 focus:outline-none focus:border-[var(--color-text)] transition-colors duration-300 font-sans"
+  const inputWithToggle = "w-full pl-11 pr-11 py-3.5 text-sm bg-transparent border border-[var(--color-border)] text-[var(--color-text)] placeholder-[var(--color-text-muted)]/50 focus:outline-none focus:border-[var(--color-text)] transition-colors duration-300 font-sans"
+  const iconClasses = "absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[var(--color-text-muted)]"
+  const labelClasses = "block text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] mb-2.5"
+  const toggleClasses = "absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors duration-300"
+
   return (
-    <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-slate-700/50 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center justify-center w-9 sm:w-10 h-9 sm:h-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 shadow-lg">
-              <span className="text-white font-bold text-base sm:text-lg">AP</span>
-            </div>
-            <span className="text-white font-semibold text-base sm:text-lg">Admin Portal</span>
-          </div>
+    <div className="min-h-screen w-full flex flex-col bg-[var(--color-bg)]">
+      {/* Minimal top bar */}
+      <nav className="w-full border-b border-[var(--color-border)]">
+        <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 py-4 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-3 group">
+            <span className="font-serif font-bold text-xl text-[var(--color-text)] tracking-tight">AP</span>
+            <span className="hidden sm:inline text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors">
+              ← Back to portfolio
+            </span>
+          </a>
+          <span className="text-[11px] font-medium tracking-[0.15em] uppercase text-[var(--color-text-muted)]">
+            Admin
+          </span>
         </div>
       </nav>
 
-      <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-3 sm:px-4 py-6 pt-20 sm:pt-24 md:pt-28">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        </div>
+      {/* Main content */}
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12 sm:py-20">
+        <div
+          className={`w-full max-w-[420px] transition-all duration-1000 ${
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          }`}
+        >
 
-        <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md backdrop-blur-md bg-slate-900/80 border border-slate-700/50 rounded-xl sm:rounded-2xl p-5 sm:p-8 shadow-2xl">
-
+          {/* ─── LOGIN STEP ─── */}
           {step === "login" && (
             <div>
-              <div className="text-center mb-6 sm:mb-8">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-cyan-500/10 border border-cyan-500/30 mb-4">
-                  <Lock className="w-6 h-6 text-cyan-400" />
-                </div>
-                <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1">Admin Access</h1>
-                <p className="text-slate-400 text-sm">Sign in to your admin dashboard</p>
+              <div className="mb-10">
+                <p className="section-label mb-4">Authentication</p>
+                <h1 className="heading-editorial text-[clamp(2.2rem,5vw,3.5rem)] mb-3">
+                  Sign in.
+                </h1>
+                <p className="text-[var(--color-text-muted)] text-sm leading-relaxed">
+                  Enter your credentials to access the admin dashboard.
+                </p>
               </div>
+
+              {/* Decorative line */}
+              <div className="w-full h-px bg-[var(--color-border)] mb-8" />
+
               {error && <Alert type="error" msg={error} />}
               {success && <Alert type="success" msg={success} />}
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-slate-300 mb-2">Email</label>
+
+              <div className="mb-5">
+                <label className={labelClasses}>Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
-                  <input type="email" placeholder="admin@example.com" className="w-full pl-10 pr-4 py-3 text-sm bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => handleEnter(e, handleLogin)} disabled={loading} />
+                  <Mail className={iconClasses} />
+                  <input
+                    type="email"
+                    placeholder="admin@example.com"
+                    className={inputClasses}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e, handleLogin)}
+                    disabled={loading}
+                  />
                 </div>
               </div>
-              <div className="mb-4 relative">
-                <label className="block text-sm font-medium text-slate-300 mb-2">Password</label>
+
+              <div className="mb-6">
+                <label className={labelClasses}>Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
-                  <input type={showPassword ? "text" : "password"} placeholder="••••••••" className="w-full pl-10 pr-10 py-3 text-sm bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => handleEnter(e, handleLogin)} disabled={loading} />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-400 transition-colors">
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  <Lock className={iconClasses} />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className={inputWithToggle}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e, handleLogin)}
+                    disabled={loading}
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className={toggleClasses}>
+                    {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                   </button>
                 </div>
               </div>
+
               <SubmitBtn onClick={handleLogin} disabled={!email || !password} loading={loading}>
-                <Lock className="w-5 h-5" /> <span>Sign In</span>
+                Sign In <span className="text-xs opacity-60">→</span>
               </SubmitBtn>
-              <button onClick={() => goTo("forgot")} className="w-full text-center text-cyan-400 hover:text-cyan-300 text-sm mt-5 transition-colors">
-                Forgot password?
-              </button>
-              <p className="text-center text-slate-500 text-xs mt-4">Authorized personnel only</p>
+
+              <div className="flex items-center justify-between mt-6">
+                <button
+                  onClick={() => goTo("forgot")}
+                  className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-medium tracking-[0.05em] transition-colors duration-300"
+                >
+                  Forgot password?
+                </button>
+                <p className="text-[var(--color-text-muted)]/50 text-[10px] font-medium tracking-[0.1em] uppercase">
+                  Authorized only
+                </p>
+              </div>
             </div>
           )}
 
+          {/* ─── FORGOT PASSWORD STEP ─── */}
           {step === "forgot" && (
             <div>
               <BackBtn to="login" onClick={goTo} disabled={loading} />
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-amber-500/10 border border-amber-500/30 mb-4">
-                  <KeyRound className="w-6 h-6 text-amber-400" />
-                </div>
-                <h1 className="text-2xl font-bold text-white mb-1">Forgot Password</h1>
-                <p className="text-slate-400 text-sm">Enter your admin email to receive an OTP</p>
+
+              <div className="mb-10">
+                <p className="section-label mb-4">Account Recovery</p>
+                <h1 className="heading-editorial text-[clamp(2rem,5vw,3rem)] mb-3">
+                  Reset password.
+                </h1>
+                <p className="text-[var(--color-text-muted)] text-sm leading-relaxed">
+                  Enter your admin email to receive a verification code.
+                </p>
               </div>
+
+              <div className="w-full h-px bg-[var(--color-border)] mb-8" />
+
               {error && <Alert type="error" msg={error} />}
               {success && <Alert type="success" msg={success} />}
+
               <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-300 mb-2">Admin Email</label>
+                <label className={labelClasses}>Admin Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
-                  <input type="email" placeholder="avpodder000@gmail.com" className="w-full pl-10 pr-4 py-3 text-sm bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => handleEnter(e, handleSendOtp)} disabled={loading} />
+                  <Mail className={iconClasses} />
+                  <input
+                    type="email"
+                    placeholder="avpodder000@gmail.com"
+                    className={inputClasses}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e, handleSendOtp)}
+                    disabled={loading}
+                  />
                 </div>
               </div>
+
               <SubmitBtn onClick={handleSendOtp} disabled={!email} loading={loading}>
-                <Send className="w-5 h-5" /> <span>Send OTP</span>
+                <Send className="w-4 h-4" /> Send Code
               </SubmitBtn>
             </div>
           )}
 
+          {/* ─── OTP VERIFICATION STEP ─── */}
           {step === "otp" && (
             <div>
               <BackBtn to="forgot" onClick={goTo} disabled={loading} />
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-violet-500/10 border border-violet-500/30 mb-4">
-                  <ShieldCheck className="w-6 h-6 text-violet-400" />
-                </div>
-                <h1 className="text-2xl font-bold text-white mb-1">Verify OTP</h1>
-                <p className="text-slate-400 text-sm">Enter the 6-digit code sent to <span className="text-cyan-400">{masked}</span></p>
+
+              <div className="mb-10">
+                <p className="section-label mb-4">Verification</p>
+                <h1 className="heading-editorial text-[clamp(2rem,5vw,3rem)] mb-3">
+                  Enter code.
+                </h1>
+                <p className="text-[var(--color-text-muted)] text-sm leading-relaxed">
+                  A 6-digit code was sent to <span className="text-[var(--color-text)] font-medium">{masked}</span>
+                </p>
               </div>
+
+              <div className="w-full h-px bg-[var(--color-border)] mb-8" />
+
               {error && <Alert type="error" msg={error} />}
               {success && <Alert type="success" msg={success} />}
-              <div className="flex justify-center gap-2 sm:gap-3 mb-6" onPaste={handleOtpPaste}>
+
+              <div className="flex justify-center gap-2.5 sm:gap-3 mb-6" onPaste={handleOtpPaste}>
                 {otpDigits.map((d, i) => (
-                  <input key={i} ref={(el) => { otpRefs.current[i] = el }} type="text" inputMode="numeric" maxLength={1} value={d}
+                  <input
+                    key={i}
+                    ref={(el) => { otpRefs.current[i] = el }}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={1}
+                    value={d}
                     onChange={(e) => handleOtpChange(i, e.target.value)}
                     onKeyDown={(e) => { handleOtpKey(i, e); if (e.key === "Enter") handleVerifyOtp() }}
-                    className="w-11 h-13 sm:w-12 sm:h-14 text-center text-xl font-bold bg-slate-800/50 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
-                    disabled={loading} />
+                    className="w-12 h-14 text-center text-xl font-serif font-bold bg-transparent border border-[var(--color-border)] text-[var(--color-text)] focus:outline-none focus:border-[var(--color-text)] transition-colors duration-300"
+                    disabled={loading}
+                  />
                 ))}
               </div>
+
               {otpTimer > 0 && (
-                <p className="text-center text-slate-500 text-xs mb-4">Resend available in {otpTimer}s</p>
+                <p className="text-center text-[var(--color-text-muted)] text-xs tracking-wide mb-5">
+                  Resend available in {otpTimer}s
+                </p>
               )}
               {otpTimer <= 0 && (
-                <button onClick={handleSendOtp} disabled={loading} className="w-full text-center text-cyan-400 hover:text-cyan-300 text-sm mb-4 transition-colors disabled:opacity-50">
-                  Resend OTP
+                <button
+                  onClick={handleSendOtp}
+                  disabled={loading}
+                  className="w-full text-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-medium tracking-[0.05em] mb-5 transition-colors duration-300 disabled:opacity-50"
+                >
+                  Resend code
                 </button>
               )}
+
               <SubmitBtn onClick={handleVerifyOtp} disabled={otpDigits.join("").length !== 6} loading={loading}>
-                <ShieldCheck className="w-5 h-5" /> <span>Verify Code</span>
+                <ShieldCheck className="w-4 h-4" /> Verify Code
               </SubmitBtn>
             </div>
           )}
 
+          {/* ─── RESET PASSWORD STEP ─── */}
           {step === "reset" && (
             <div>
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-green-500/10 border border-green-500/30 mb-4">
-                  <Lock className="w-6 h-6 text-green-400" />
-                </div>
-                <h1 className="text-2xl font-bold text-white mb-1">Reset Password</h1>
-                <p className="text-slate-400 text-sm">Create a new password for your account</p>
+              <div className="mb-10">
+                <p className="section-label mb-4">New Password</p>
+                <h1 className="heading-editorial text-[clamp(2rem,5vw,3rem)] mb-3">
+                  Almost there.
+                </h1>
+                <p className="text-[var(--color-text-muted)] text-sm leading-relaxed">
+                  Create a new password for your admin account.
+                </p>
               </div>
+
+              <div className="w-full h-px bg-[var(--color-border)] mb-8" />
+
               {error && <Alert type="error" msg={error} />}
               {success && <Alert type="success" msg={success} />}
-              <div className="mb-4 relative">
-                <label className="block text-sm font-medium text-slate-300 mb-2">New Password</label>
+
+              <div className="mb-5">
+                <label className={labelClasses}>New Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
-                  <input type={showNewPassword ? "text" : "password"} placeholder="••••••••" className="w-full pl-10 pr-10 py-3 text-sm bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} disabled={loading} />
-                  <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-400 transition-colors">
-                    {showNewPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  <Lock className={iconClasses} />
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className={inputWithToggle}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    disabled={loading}
+                  />
+                  <button type="button" onClick={() => setShowNewPassword(!showNewPassword)} className={toggleClasses}>
+                    {showNewPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                   </button>
                 </div>
               </div>
-              <div className="mb-4 relative">
-                <label className="block text-sm font-medium text-slate-300 mb-2">Confirm Password</label>
+
+              <div className="mb-5">
+                <label className={labelClasses}>Confirm Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-3.5 w-5 h-5 text-slate-500" />
-                  <input type={showConfirmPassword ? "text" : "password"} placeholder="••••••••" className="w-full pl-10 pr-10 py-3 text-sm bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:ring-2 focus:ring-cyan-500/20 transition-all" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} onKeyDown={(e) => handleEnter(e, handleResetPassword)} disabled={loading} />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-3 top-3.5 text-slate-500 hover:text-slate-400 transition-colors">
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  <Lock className={iconClasses} />
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className={inputWithToggle}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    onKeyDown={(e) => handleEnter(e, handleResetPassword)}
+                    disabled={loading}
+                  />
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className={toggleClasses}>
+                    {showConfirmPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                   </button>
                 </div>
               </div>
+
               {newPassword && confirmPassword && (
-                <p className={`text-xs mb-4 ${newPassword === confirmPassword ? "text-green-400" : "text-red-400"}`}>
+                <p className={`text-xs tracking-wide mb-5 ${newPassword === confirmPassword ? "text-emerald-700" : "text-red-700"}`}>
                   {newPassword === confirmPassword ? "✓ Passwords match" : "✗ Passwords do not match"}
                 </p>
               )}
+
               <SubmitBtn onClick={handleResetPassword} disabled={!newPassword || !confirmPassword || newPassword !== confirmPassword} loading={loading}>
-                <Lock className="w-5 h-5" /> <span>Reset Password</span>
+                Reset Password <span className="text-xs opacity-60">→</span>
               </SubmitBtn>
             </div>
           )}
+
+          {/* Bottom decorative element */}
+          <div className="mt-12 flex items-center gap-4">
+            <div className="flex-1 h-px bg-[var(--color-border)]" />
+            <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-[var(--color-text-muted)]/40">
+              AP
+            </span>
+            <div className="flex-1 h-px bg-[var(--color-border)]" />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }

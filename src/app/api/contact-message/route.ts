@@ -27,52 +27,52 @@ export async function POST(req: Request) {
             subject: `Portfolio Contact — ${name}`,
             text: message,
             html: `
-  <div style="background:#0f172a;padding:30px;font-family:Arial,Helvetica,sans-serif;">
-    <div style="max-width:600px;margin:0 auto;background:#020617;border-radius:14px;border:1px solid #1e293b;">
-      
-      <div style="padding:22px 26px;border-bottom:1px solid #1e293b;">
-        <h2 style="margin:0;font-size:22px;color:#e2e8f0;">
-          📩 New Contact Message
-        </h2>
-        <p style="margin-top:4px;color:#94a3b8;">
-          Someone reached out from your portfolio website
-        </p>
-      </div>
+<div style="background:#D2C8BC;padding:24px 12px;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <div style="max-width:480px;margin:0 auto;background:#EDE8E2;border:1px solid #B0A89E;">
 
-      <div style="padding:26px;color:#e5e7eb;">
-        
-        <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-          <b style="color:#38bdf8;">Name:</b> ${name}
-        </p>
-
-        <p style="font-size:15px;line-height:1.7;margin:0 0 16px;">
-          <b style="color:#38bdf8;">Email:</b> 
-          <a href="mailto:${email}" style="color:#93c5fd;text-decoration:none;">
-            ${email}
-          </a>
-        </p>
-
-        <div style="
-          background:#020617;
-          border:1px solid #1e293b;
-          border-radius:10px;
-          padding:16px;
-          margin-top:10px;
-          ">
-          <p style="margin:0;font-size:15px;line-height:1.8;color:#cbd5f5;">
-            ${message}
-          </p>
-        </div>
-      </div>
-
-      <div style="padding:18px 26px;border-top:1px solid #1e293b;color:#94a3b8;font-size:12px;text-align:center;">
-        This email was sent from your portfolio contact form.<br/>
-        <span style="color:#38bdf8;">You can reply directly to respond.</span>
-      </div>
-
+    <!-- Header -->
+    <div style="padding:28px 24px 20px;border-bottom:1px solid #B0A89E;text-align:center;">
+      <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#5A5550;">Portfolio — Contact</p>
+      <h1 style="margin:0;font-size:24px;font-weight:700;color:#1A1A1A;font-family:Georgia,'Times New Roman',serif;">New Message</h1>
     </div>
+
+    <!-- Body -->
+    <div style="padding:24px;">
+
+      <!-- Sender info -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom:20px;">
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #D2C8BC;">
+            <p style="margin:0 0 2px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5A5550;">From</p>
+            <p style="margin:0;font-size:15px;font-weight:600;color:#1A1A1A;">${name}</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #D2C8BC;">
+            <p style="margin:0 0 2px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5A5550;">Email</p>
+            <a href="mailto:${email}" style="font-size:14px;color:#1A1A1A;text-decoration:none;">${email}</a>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Message -->
+      <div style="padding:16px 18px;background:#D2C8BC;border:1px solid #B0A89E;">
+        <p style="margin:0 0 6px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#5A5550;">Message</p>
+        <p style="margin:0;font-size:14px;line-height:1.7;color:#1A1A1A;white-space:pre-wrap;">${message}</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div style="padding:16px 24px;border-top:1px solid #B0A89E;text-align:center;">
+      <p style="margin:0;font-size:11px;color:#5A5550;line-height:1.6;">
+        Sent from your portfolio contact form.<br/>
+        <strong>You can reply directly to respond.</strong>
+      </p>
+    </div>
+
   </div>
-  `,
+</div>
+`,
         });
 
 

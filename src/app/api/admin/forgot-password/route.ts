@@ -41,23 +41,39 @@ export async function POST(req: Request) {
       to: ADMIN_EMAIL,
       subject: "Admin Password Reset — OTP Code",
       html: `
-<div style="background:#0f172a;padding:30px;font-family:Arial,Helvetica,sans-serif;">
-  <div style="max-width:600px;margin:0 auto;background:#020617;border-radius:14px;border:1px solid #1e293b;">
-    <div style="padding:22px 26px;border-bottom:1px solid #1e293b;">
-      <h2 style="margin:0;font-size:22px;color:#e2e8f0;">&#128274; Password Reset OTP</h2>
-      <p style="margin-top:4px;color:#94a3b8;">Use this code to reset your admin password</p>
+<div style="background:#D2C8BC;padding:24px 12px;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <div style="max-width:480px;margin:0 auto;background:#EDE8E2;border:1px solid #B0A89E;">
+
+    <!-- Header -->
+    <div style="padding:28px 24px 20px;border-bottom:1px solid #B0A89E;text-align:center;">
+      <p style="margin:0 0 6px;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#5A5550;">Avra Podder — Admin</p>
+      <h1 style="margin:0;font-size:24px;font-weight:700;color:#1A1A1A;font-family:Georgia,'Times New Roman',serif;">Password Reset</h1>
     </div>
-    <div style="padding:30px 26px;color:#e5e7eb;text-align:center;">
-      <p style="font-size:15px;color:#94a3b8;margin:0 0 24px;">Your one-time password is:</p>
-      <div style="background:#0f172a;border:2px solid #0ea5e9;border-radius:12px;padding:20px 30px;display:inline-block;">
-        <span style="font-size:36px;font-weight:bold;letter-spacing:12px;color:#22d3ee;">${otp}</span>
-      </div>
-      <p style="margin:24px 0 0;font-size:13px;color:#64748b;">This code expires in <b>10 minutes</b>.</p>
+
+    <!-- Body -->
+    <div style="padding:28px 24px;text-align:center;">
+      <p style="margin:0 0 24px;font-size:14px;color:#5A5550;line-height:1.6;">Your one-time verification code is:</p>
+
+      <!-- OTP Box — compact for mobile -->
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin:0 auto;">
+        <tr>
+          ${otp.split("").map((d: string) => `<td style="padding:0 3px;"><div style="width:36px;height:44px;line-height:44px;text-align:center;font-size:22px;font-weight:700;font-family:Georgia,'Times New Roman',serif;color:#1A1A1A;background:#D2C8BC;border:1px solid #B0A89E;">${d}</div></td>`).join("")}
+        </tr>
+      </table>
+
+      <p style="margin:24px 0 0;font-size:12px;color:#5A5550;">
+        This code expires in <strong style="color:#1A1A1A;">10 minutes</strong>.
+      </p>
     </div>
-    <div style="padding:18px 26px;border-top:1px solid #1e293b;color:#94a3b8;font-size:12px;text-align:center;">
-      If you didn't request this, please ignore this email.<br/>
-      <span style="color:#38bdf8;">Do not share this code with anyone.</span>
+
+    <!-- Footer -->
+    <div style="padding:16px 24px;border-top:1px solid #B0A89E;text-align:center;">
+      <p style="margin:0;font-size:11px;color:#5A5550;line-height:1.6;">
+        If you didn't request this, please ignore this email.<br/>
+        <strong>Do not share this code with anyone.</strong>
+      </p>
     </div>
+
   </div>
 </div>`,
     });
