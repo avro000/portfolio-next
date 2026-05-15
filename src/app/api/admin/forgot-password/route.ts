@@ -11,6 +11,7 @@ export async function POST(req: Request) {
     if (!email || email.toLowerCase() !== ADMIN_EMAIL) {
       return NextResponse.json({
         message: "If this email is registered, you will receive an OTP.",
+        sent: false,
       });
     }
 
@@ -78,7 +79,7 @@ export async function POST(req: Request) {
 </div>`,
     });
 
-    return NextResponse.json({ message: "OTP sent successfully." });
+    return NextResponse.json({ message: "OTP sent successfully.", sent: true });
   } catch (error) {
     console.error("FORGOT PASSWORD ERROR:", error);
     return NextResponse.json(

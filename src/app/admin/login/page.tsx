@@ -104,9 +104,13 @@ export default function AdminLogin() {
       })
       const data = await res.json()
       if (!res.ok) { setError(data.error || "Failed to send OTP."); setLoading(false); return }
-      setSuccess("OTP sent to your email!")
-      setOtpTimer(60)
-      setTimeout(() => goTo("otp"), 1000)
+      if (data.sent) {
+        setSuccess("OTP sent to your email!")
+        setOtpTimer(60)
+        setTimeout(() => goTo("otp"), 1000)
+      } else {
+        setError("No account found with this email.")
+      }
     } catch { setError("Network error. Try again.") }
     setLoading(false)
   }
